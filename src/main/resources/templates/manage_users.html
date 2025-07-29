@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 28px;
+      color: #ff4b2b;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #ff4b2b;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #ff416c;
+    }
+    .home-btn {
+      display: inline-block;
+      background-color: #5e057e;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .home-btn:hover {
+      background-color: #2ebf91;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #2ebf91;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+      text-align: left;
+      margin-bottom: 10px;
+      font-size: 18px;
+      border-bottom: 2px solid #2ebf91;
+      padding-bottom: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #2ebf91;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1 class="title">Manage Users</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Telefonnummer</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.fullname}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.role}"></td>
+      <td th:text="${user.phonenumber}"></td>
+      <td><a th:href="@{'/edit-user/' + ${user.id}}">Edit</a></td>
+      <td><a th:href="@{'/delete-user/' + ${user.id}}" onclick="return
+      confirm('Are you sure you want to delete this user?');">Delete</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a th:href="@{/register}" class="btn">Add New User</a>
+  <a th:href="@{/home}" class="home-btn">Home</a>
+  <a th:href="@{/admin_dashboard}" class="home-btn">Back</a>
+
+</div>
+</body>
+</html>

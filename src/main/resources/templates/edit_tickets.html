@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Ticket</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #36d1dc;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            background-color: #36d1dc;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5b86e5;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #36d1dc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Ticket</h1>
+    <form th:action="@{/edit-ticket/{id}(id=${ticket.id})}" th:object="${ticket}" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" th:field="*{title}" required />
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" th:field="*{status}" required>
+            <option value="Notwendig" th:selected="*{status == 'Notwendig'}">Notwendig</option>
+            <option value="Optional" th:selected="*{status == 'Optional'}">Optional</option>
+            <option value="Nicht notwendig" th:selected="*{status == 'Nicht notwendig'}">Nicht notwendig</option>
+            <option value="Beendet" th:selected="*{status == 'Beendet'}">Beendet</option>
+        </select>
+        <button type="submit">Save Changes</button>
+        <a th:href="@{/view-reports}">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

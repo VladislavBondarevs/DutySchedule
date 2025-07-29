@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to right, #ff416c, #ef725c);
+      font-family: 'Arial', sans-serif;
+    }
+
+    .admin-container {
+      width: 100%;
+      max-width: 1000px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .admin-title {
+      font-size: 32px;
+      color: #ff4b2b;
+      margin-bottom: 20px;
+    }
+
+    .admin-info {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #ff4b2b;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+      margin: 10px;
+    }
+
+    .btn:hover {
+      background-color: #ff416c;
+    }
+
+    .logout-link {
+      color: #ff4b2b;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .logout-link:hover {
+      color: #ff416c;
+    }
+  </style>
+</head>
+
+<body>
+<div class="admin-container">
+  <h1 class="admin-title">Admin Dashboard</h1>
+
+  <div th:if="${userdetail != null}">
+    <p>Welcome, <span th:text="${userdetail.fullname}">Admin Name</span></p>
+  </div>
+  <a th:href="@{/manage-users}" class="btn">Manage Users</a>
+  <a th:href="@{/schedule}" class="btn">Schedule</a>
+  <a th:href="@{/view-reports}" class="btn">View Reports</a>
+  <a th:href="@{/home}" class="btn" sec:authorize="hasRole('ADMIN')">Back</a>
+  <div class="logout-section" style="margin-top: 20px;">
+    <a th:href="@{/logout}" class="logout-link">Logout</a>
+  </div>
+</div>
+</body>
+
+</html>

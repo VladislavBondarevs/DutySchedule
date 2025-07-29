@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #8360c3, #2ebf91);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .dashboard {
+            background-color: #fff;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .dashboard_title {
+            font-size: 28px;
+            color: #5e057e;
+            margin-bottom: 20px;
+        }
+
+        .dashboard_user_name {
+            font-size: 20px;
+            color: #2ebf91;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #5e057e;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .btn:hover {
+            background-color: #2ebf91;
+        }
+
+        .span-text {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .logout-link {
+            color: #5e057e;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .logout-link:hover {
+            color: #2ebf91;
+        }
+    </style>
+</head>
+
+<body>
+<div class="dashboard">
+    <h1 class="dashboard_title">Welcome to the Dashboard</h1>
+    <div class="dashboard_user">
+        <h2 th:text="${userdetail.fullname}" class="dashboard_user_name">User Fullname</h2>
+        <a th:href="@{/dashboard}" class="btn">Teilnehmer</a>
+        <a th:href="@{/create_ticket}" class="btn">Create Ticket</a>
+        <a th:href="@{/schedule}" class="btn" sec:authorize="hasRole('ADMIN')">Dienstplan-Kalender</a>
+        <a th:href="@{/calendar_view}" class="btn">Kalender</a>
+        <a th:href="@{/admin_dashboard}" class="btn" sec:authorize="hasRole('ADMIN')">Admin</a>
+    </div>
+
+    <div class="span-text">
+            <span th:authorize="isAuthenticated">
+                <a th:href="@{/logout}" class="logout-link">Logout</a>
+            </span>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>Duty Schedule Calendar</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 10px;
+            padding: 40px;
+            padding-top 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin: 20px;
+        }
+
+
+        h1, h2 {
+            color: #4b0082;
+            margin-bottom: 20px;
+        }
+
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+         form {
+             background-color: #fff;
+             border: 1px solid #ddd;
+             border-radius: 5px;
+             width: 100%;
+             margin-top: 20px;
+             padding: 20px; /* Внутренний отступ для симметрии */
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+             box-sizing: border-box;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+         }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4b0082;
+            text-align: left;
+        }
+
+        input[type="date"], select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button[type="submit"] {
+            background-color: #6a11cb;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 50%;
+            box-sizing: border-box;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4b0082;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            background-color: #4b0082;
+            z-index: 1000;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 20px;
+            background-color: #4b0082;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #6a11cb;
+        }
+
+        .pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .pagination ul {
+            list-style-type: none;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .pagination ul li {
+            display: inline;
+            margin-right: 5px;
+        }
+
+        .pagination ul li a {
+            text-decoration: none;
+            color: #4b0082;
+            font-weight: bold;
+            padding: 10px 15px;
+            border: 1px solid #4b0082;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination ul li a:hover {
+            background-color: #4b0082;
+            color: white;
+        }
+
+        .pagination ul li a.active {
+            background-color: #4b0082;
+            color: white;
+        }
+
+        .pagination ul li span {
+            padding: 10px 15px;
+            color: #4b0082;
+        }
+           details summary {
+            cursor: pointer;
+            font-size: 18px;
+            color: #4b0082;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .duty-form, .assign-form {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <nav>
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/calendar_view}">Dienstplan-Kalender</a></li>
+        </ul>
+    </nav>
+    <details>
+        <summary>Neue Aufgabe hinzufügen</summary>
+        <form th:action="@{/schedule}" method="post" th:object="${newSchedule}" class="duty-form">
+            <label for="newScheduleDate">Datum</label>
+            <input type="date" th:field="*{date}" id="newScheduleDate" class="duty-input" required />
+
+            <label for="newScheduleParticipant">Teilnehmer</label>
+            <select th:field="*{participant.id}" id="newScheduleParticipant" class="duty-select" required>
+                <option th:each="user : ${participants}" th:value="${user.id}" th:text="${user.fullname}">Teilnehmer</option>
+            </select>
+
+            <label for="newScheduleDutyType">Aufgabentyp</label>
+            <select th:field="*{dutyType}" id="newScheduleDutyType" class="duty-select" required>
+                <option value="Küche">Küche</option>
+                <option value="Vertreter">Vertreter</option>
+            </select>
+            <button type="submit" class="duty-button">Bestätigen</button>
+        </form>
+    </details>
+
+    <details>
+        <summary>Teilnehmer einem Wochentag zuweisen</summary>
+        <form th:action="@{/schedule/manualAssignForYear}" method="post" class="assign-form">
+            <label for="assignParticipant">Teilnehmer auswählen:</label>
+            <select id="assignParticipant" name="participantId">
+                <option th:each="participant : ${participants}" th:value="${participant.id}" th:text="${participant.fullname}"></option>
+            </select>
+
+            <label for="dayOfWeek">Wochentag auswählen:</label>
+            <select id="dayOfWeek" name="dayOfWeek">
+                <option value="MONDAY">Montag</option>
+                <option value="TUESDAY">Dienstag</option>
+                <option value="WEDNESDAY">Mittwoch</option>
+                <option value="THURSDAY">Donnerstag</option>
+                <option value="FRIDAY">Freitag</option>
+            </select>
+
+            <label for="assignDutyType">Aufgabentyp</label>
+            <select id="assignDutyType" name="dutyType" class="duty-select" required>
+                <option value="Küche">Küche</option>
+                <option value="Vertreter">Vertreter</option>
+            </select>
+
+            <button type="submit" class="duty-button">Für das ganze Jahr zuweisen</button>
+        </form>
+    </details>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Teilnehmer</th>
+            <th>Duty Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.date}">2024-10-21</td>
+            <td th:text="${schedule.participant != null ? schedule.participant.fullname : 'Unknown'}">Participant Name</td>
+            <td th:text="${schedule.dutyType != null ? schedule.dutyType : 'Unknown'}">Duty Type</td>
+            <td><a th:href="@{'/update_schedule/' + ${schedule.id}}">Edit</a></td>
+            <td><a th:href="@{'/delete_schedule/' + ${schedule.id}}" onclick="return confirm('Are you sure you want to delete this schedule?');">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <ul>
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{/schedule(page=${currentPage - 1})}">Previous</a>
+            </li>
+            <li th:if="${currentPage > 2}">
+                <a th:href="@{/schedule(page=0)}">1</a>
+                <span>...</span>
+            </li>
+            <li th:each="i : ${#numbers.sequence((currentPage - 2 > 0 ? currentPage - 2 : 0), (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1))}">
+                <a th:href="@{'/schedule?page=' + ${i}}" th:text="${i + 1}" th:classappend="${i == currentPage} ? 'active' : '' ">Page Number</a>
+            </li>
+            <li th:if="${currentPage < totalPages - 3}">
+                <span>...</span>
+                <a th:href="@{/schedule(page=${totalPages - 1})}" th:text="${totalPages}">Last</a>
+            </li>
+            <li th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{/schedule(page=${currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <h1>  </h1>
+    <form id="deleteAllForm" action="/schedule/deleteAll" method="post" style="display:none;"></form>
+    <a href="#" onclick="if (confirm('Are you sure you want to delete all schedules?')) { document.getElementById('deleteAllForm').submit(); } return false "sec:authorize="hasRole('ADMIN')">Delete All Schedules</a>
+
+</div>
+
+</body>
+</html>

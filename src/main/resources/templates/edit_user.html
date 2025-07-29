@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit User</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #ff4b2b;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="text"], input[type="email"] {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      width: calc(100% - 22px);
+    }
+
+    button {
+      background-color: #ff4b2b;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff416c;
+    }
+
+    a {
+      display: inline-block;
+      color: #5e057e;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 20px;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #2ebf91;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Edit User</h1>
+  <form th:action="@{/edit-user/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:field="*{username}" required />
+    <br>
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" name="fullName" th:field="*{fullname}" required />
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:field="*{email}" required />
+    <br>
+    <label for="role">Role:</label>
+    <input type="text" id="role" name="role" th:field="*{role}" required />
+    <br>
+    <label for="phonenumber">Phonenumber:</label>
+    <input type="text" id="phonenumber" name="phonenumber" th:field="*{phonenumber}" required />
+    <br>
+    <button type="submit">Save Changes</button>
+    <a th:href="@{/manage-users}">Cancel</a>
+  </form>
+</div>
+</body>
+</html>

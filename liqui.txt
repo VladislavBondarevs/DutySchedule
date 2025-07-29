@@ -1,0 +1,83 @@
+<databaseChangeLog 
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- users -->
+    <changeSet id="1" author="yourname">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fullname" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="username" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="raw_password" type="varchar(255)"/>
+            <column name="phonenumber" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- duty_schedule -->
+    <changeSet id="2" author="yourname">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="duty_schedule"/>
+            </not>
+        </preConditions>
+        <createTable tableName="duty_schedule">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="date"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="duty_type" type="varchar(255)"/>
+            <column name="participant_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <!-- foreign key zwischen duty_schedule und users -->
+    <changeSet id="3" author="yourname">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM information_schema.table_constraints
+                    WHERE constraint_name = 'fk_participant_user'
+                </sqlCheck>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="duty_schedule"
+                                 baseColumnNames="participant_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_participant_user"/>
+    </changeSet>
+
+    <!-- ticket -->
+    <changeSet id="4" author="yourname">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ticket"/>
+            </not>
+        </preConditions>
+        <createTable tableName="ticket">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="start_date_now" type="datetime2"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

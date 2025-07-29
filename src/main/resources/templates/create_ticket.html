@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        .form-container {
+            width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Create Ticket</h1>
+    <form th:action="@{/create-ticket}" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Notwendig">Notwendig</option>
+            <option value="Teilweise notwendig">Teilweise notwendig</option>
+            <option value="Nicht notwendig">Nicht notwendig</option>
+        </select>
+
+        <button type="submit">Create Ticket</button>
+        <div class="span-text">
+            <span th:authorize="isAuthenticated">
+                <a th:href="@{/home}" class="logout-link">Zurück zum Menü</a>
+            </span>
+        </div>
+    </form>
+</div>
+</body>
+</html>
